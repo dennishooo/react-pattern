@@ -5,6 +5,8 @@ type Props = {
 };
 
 export default function SelectedCountry({ country }: Props) {
+  console.log("selected country rerendered");
+
   if (!country) return <>no country selected!</>;
   return (
     <>

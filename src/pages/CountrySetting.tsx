@@ -38,7 +38,7 @@ export default function CountrySettings() {
   ];
 
   const [countries, setCountries] = useState(data);
-
+  const [counter, setCounter] = useState(0);
   const value = useMemo(
     () => ({
       countries,
@@ -47,14 +47,28 @@ export default function CountrySettings() {
     [countries]
   );
 
-  return (
-    <>
-      //{" "}
-      <CountryContext.Provider value={{ countries, setCountries }}>
+  const content = useMemo(() => {
+    return (
+      <>
         <ListOfCountries countries={countries} />
         <SelectedCountry
           country={countries.find((country) => country.selected === true)}
         />
+      </>
+    );
+  }, [countries]);
+
+  return (
+    <>
+      //{" "}
+      <CountryContext.Provider value={{ countries, setCountries }}>
+        <div>page: {counter}</div>
+        <button onClick={() => setCounter((pv) => pv + 1)}>set counter</button>
+        {content}
+        {/* <ListOfCountries countries={countries} />
+        <SelectedCountry
+          country={countries.find((country) => country.selected === true)}
+        /> */}
         <TestContext />
         //{" "}
       </CountryContext.Provider>
