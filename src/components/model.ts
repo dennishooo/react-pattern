@@ -39,3 +39,8 @@ export const data: Country[] = [
     img: "us",
   },
 ];
+
+export type Mode = "light" | "dark";
+export type Theme = {
+  mode: Mode;
+};
