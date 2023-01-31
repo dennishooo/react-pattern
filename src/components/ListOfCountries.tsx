@@ -4,17 +4,19 @@ import { Country } from "./model";
 
 type Props = {
   countries: Country[];
+  savedCountry: Country;
+  selectedCountry: Country;
 };
 
-export default function ListOfCountries({ countries }: Props) {
-  const [counter, setCounter] = useState(0);
+export default function ListOfCountries({
+  countries,
+  savedCountry,
+  selectedCountry,
+}: Props) {
   console.log("list country rerendered");
 
   return (
     <>
-      <div>list: {counter}</div>
-      <button onClick={() => setCounter((pv) => pv + 1)}>set counter</button>
-
       <table>
         <thead>
           <tr>
@@ -25,8 +27,15 @@ export default function ListOfCountries({ countries }: Props) {
           {countries.map((country) => (
             <Item
               key={country.name}
+              id={country.id}
               name={country.name}
-              selected={country.selected}
+              category={
+                country.id === selectedCountry.id
+                  ? "selected"
+                  : country.id === savedCountry.id
+                  ? "saved"
+                  : ""
+              }
             />
           ))}
         </tbody>

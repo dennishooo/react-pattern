@@ -1,43 +1,16 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import ListOfCountries from "../components/ListOfCountries";
-import { Country } from "../components/model";
+import { Country, data } from "../components/model";
 import SelectedCountry from "../components/SelectedCountry";
 import TestContext from "../components/TestContext";
 
 export const CountryContext = createContext<any>(null);
 
 export default function CountrySettings() {
-  const data: Country[] = [
-    {
-      name: "hong kong",
-      capital: "central",
-      region: "asia",
-      subregion: "south east asia",
-      currency: "hkd",
-      img: "hk",
-      selected: true,
-    },
-    {
-      name: "japan",
-      capital: "tokyo",
-      region: "asia",
-      subregion: "south east asia",
-      currency: "jp",
-      img: "jp",
-      selected: false,
-    },
-    {
-      name: "america",
-      capital: "washington",
-      region: "america",
-      subregion: "north america",
-      currency: "usd",
-      img: "us",
-      selected: false,
-    },
-  ];
-
   const [countries, setCountries] = useState(data);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(countries[0]);
+  const [savedCountry, setSavedCountry] = useState<Country>(countries[0]);
+
   const [counter, setCounter] = useState(0);
   const value = useMemo(
     () => ({
@@ -47,28 +20,30 @@ export default function CountrySettings() {
     [countries]
   );
 
-  const content = useMemo(() => {
+  const countriesList = useMemo(() => {
     return (
-      <>
-        <ListOfCountries countries={countries} />
-        <SelectedCountry
-          country={countries.find((country) => country.selected === true)}
-        />
-      </>
+      <ListOfCountries
+        countries={countries}
+        savedCountry={savedCountry}
+        selectedCountry={selectedCountry}
+      />
     );
-  }, [countries]);
+  }, [countries, savedCountry, selectedCountry]);
+
+  const selectedCountryInfo = useMemo(() => {
+    return <SelectedCountry country={selectedCountry} />;
+  }, [selectedCountry, savedCountry]);
 
   return (
     <>
       //{" "}
-      <CountryContext.Provider value={{ countries, setCountries }}>
+      <CountryContext.Provider
+        value={{ countries, setCountries, setSelectedCountry }}
+      >
         <div>page: {counter}</div>
         <button onClick={() => setCounter((pv) => pv + 1)}>set counter</button>
-        {content}
-        {/* <ListOfCountries countries={countries} />
-        <SelectedCountry
-          country={countries.find((country) => country.selected === true)}
-        /> */}
+        {countriesList}
+        {selectedCountryInfo}
         <TestContext />
         //{" "}
       </CountryContext.Provider>
